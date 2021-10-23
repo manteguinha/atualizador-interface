@@ -25,20 +25,31 @@ class Tela:
                 path = 'Arquivo.zip' # Nome que deseja para o arquivo
 
                 # Checando nova versão
-                if versao == '0.1.0': # Coloque aqui a versão
+                if versao == '0.0.0': # Coloque aqui a versão
                     sg.popup('Nenhuma nova versão encontrada.')
                 else:
                     if os.path.exists('Atualizado para a versão ' + versao):
                         sg.popup('A atualização foi instalada.')
                     else:
                         if sg.popup(f'Atualização disponível.\n\n=-==-==-==-==-==-==-=\nChangelogs:\n{changelogs}\n=-==-==-==-==-==-==-=\n\nAtualizar agora?\n', custom_text =('Sim', 'Nao')) == 'Sim':
+                            self.janela.hide()
                             urllib.request.urlretrieve(link, path)
                             shutil.unpack_archive(path, 'Atualizado para a versão ' + versao)
                             os.remove(path)
-                            for i in range(1,1000):
-                                sg.one_line_progress_meter('My Meter', i+1, 1000,'Baixando atualização...\nDescompactando arquivo...')
-                            if sg.popup('A atualização foi instalada.', custom_text =('Fechar')):
-                                break
+                            # Barra de progresso
+                            progress_bar = sg.ProgressBar(max_value=100, orientation='h', size=(20, 20), key='progressbar')
+                            layout = [
+                                [sg.Text('Baixando arquivo...', font=("Arial", 12))],
+                                [progress_bar]
+                            ]
+                            window = sg.Window('Baixando arquivo...', layout, finalize=True)
+                            for i in range(100):
+                                progress_bar.UpdateBar(i + 1)
+                                window.read(timeout=10)
+                            window.close()
+                            sg.popup('Atualização instalada com sucesso.', custom_text =('Fechar'))
+                            self.janela.close()
+                            break
                 
 tela = Tela()
 tela.Iniciar()
