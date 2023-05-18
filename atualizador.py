@@ -19,7 +19,7 @@ class Tela:
                 break
 
             if self.button == 'Verificar':
-                versao = urllib.request.urlopen('Insira aqui o linkt').read().decode('utf8').splitlines()[0] # Link do RAW do arquivo contendo a versao
+                versao = urllib.request.urlopen('Insira aqui o lint').read().decode('utf8').splitlines()[0] # Link do RAW do arquivo contendo a versao
                 changelogs = urllib.request.urlopen('Insira aqui o link').read().decode('utf8') # Link do RAW do arquivo contendo o changlog
                 link = 'Insira aqui o link' # Link do download no GitHub
                 path = 'Arquivo.zip' # Nome que deseja para o arquivo
